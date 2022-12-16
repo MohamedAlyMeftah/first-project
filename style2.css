@@ -4189,7 +4189,7 @@ header .header-container__intro--description h1 {
 .prices__thead {
   display: flex;
   flex-direction: column;
-  /* gap: 3.25rem; */
+  gap: 3.25rem;
   margin: 2rem 0;
   padding: 2rem 0;
 }
@@ -5210,6 +5210,15 @@ section.second-section {
   cursor: pointer;
 }
 
+.slider__btn--left2 {
+  left: 6%;
+  transform: translate(-50%, -50%);
+}
+
+.slider__btn--right2 {
+  right: 6%;
+  transform: translate(50%, -50%);
+}
 .slider__btn--left {
   left: 6%;
   transform: translate(-50%, -50%);
@@ -5219,26 +5228,29 @@ section.second-section {
   right: 6%;
   transform: translate(50%, -50%);
 }
-@media (max-width: 43.75rem) {
+.prices-responsivness {
+  display: none;
+}
+@media (max-width: 56.25rem) {
   .prices-responsivness {
-    max-width: 23rem;
+    display: block;
+    max-width: 30rem;
     width: 100%;
     margin: 2rem auto;
-    display: flex;
-    gap: 3rem;
   }
   .prices-responsivness > div {
     border: 1px solid black;
     border-radius: 1rem;
+    margin: 2rem;
   }
   .prices-responsivness button {
-    margin: 2rem 7rem;
+    margin: 2rem 8rem;
   }
   .prices-responsivness > div > div {
     display: flex;
     gap: 1rem;
     margin: 1.6rem;
-    flex-direction: row-reverse;
+
     line-height: 1.5;
   }
 } ;
