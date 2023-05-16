@@ -102,131 +102,131 @@ async function extractEAN(excelFilePath) {
             el.textContent.trim()
           );
           // console.log({ brandName });
-          localProductInfo["Brand name"] = brandName;
+          // localProductInfo["Brand name"] = brandName;
 
-          // Get product name
-          const productNameSelector = ".c-product-detail__name";
-          await page.waitForSelector(
-            productNameSelector,
-            waitForSelectorOptions
-          );
-          const productNameElement = await page.$(productNameSelector);
-          const productName = await productNameElement.evaluate((el) =>
-            el.textContent.trim()
-          );
-          // console.log({ productName });
-          localProductInfo["Product name"] = productName;
+          // // Get product name
+          // const productNameSelector = ".c-product-detail__name";
+          // await page.waitForSelector(
+          //   productNameSelector,
+          //   waitForSelectorOptions
+          // );
+          // const productNameElement = await page.$(productNameSelector);
+          // const productName = await productNameElement.evaluate((el) =>
+          //   el.textContent.trim()
+          // );
+          // // console.log({ productName });
+          // localProductInfo["Product name"] = productName;
 
-          // Get product description
-          const productDescriptionSelector =
-            ".c-product-detail__content .content";
-          await page.waitForSelector(
-            productDescriptionSelector,
-            waitForSelectorOptions
-          );
-          const productDescriptionElement = await page.$(
-            productDescriptionSelector
-          );
-          const productDescription = await productDescriptionElement.evaluate(
-            (el) => el.textContent.replace(/\r?\n|\r/g, "")
-          );
-          // console.log({ productDescription });
-          localProductInfo["Description"] = productDescription;
+          // // Get product description
+          // const productDescriptionSelector =
+          //   ".c-product-detail__content .content";
+          // await page.waitForSelector(
+          //   productDescriptionSelector,
+          //   waitForSelectorOptions
+          // );
+          // const productDescriptionElement = await page.$(
+          //   productDescriptionSelector
+          // );
+          // const productDescription = await productDescriptionElement.evaluate(
+          //   (el) => el.textContent.replace(/\r?\n|\r/g, "")
+          // );
+          // // console.log({ productDescription });
+          // localProductInfo["Description"] = productDescription;
 
-          // Get product price
-          const productPriceSelector = ".c-prices__sales";
-          await page.waitForSelector(
-            productPriceSelector,
-            waitForSelectorOptions
-          );
-          const productPriceElement = await page.$(productPriceSelector);
-          const productPrice = await productPriceElement.evaluate((el) =>
-            el.textContent.replace(/^\s*$(?:\r\n?|\n)/gm, "").slice(0, -3)
-          );
-          // console.log({ productPrice });
-          localProductInfo["price"] = productPrice;
+          // // Get product price
+          // const productPriceSelector = ".c-prices__sales";
+          // await page.waitForSelector(
+          //   productPriceSelector,
+          //   waitForSelectorOptions
+          // );
+          // const productPriceElement = await page.$(productPriceSelector);
+          // const productPrice = await productPriceElement.evaluate((el) =>
+          //   el.textContent.replace(/^\s*$(?:\r\n?|\n)/gm, "").slice(0, -3)
+          // );
+          // // console.log({ productPrice });
+          // localProductInfo["price"] = productPrice;
 
-          // Get product sizes
-          const productSizeSelector = "[data-attr-id='size_vendeur'] > span";
-          await page.waitForSelector(
-            productSizeSelector,
-            waitForSelectorOptions
-          );
-          const productSizeElements = await page.$$(productSizeSelector);
-          const productSizes = [];
-          for (const element of productSizeElements) {
-            try {
-              const productSize = await element.evaluate((el) =>
-                el.textContent.trim()
-              );
-              productSizes.push(productSize);
-            } catch (error) {
-              console.error(
-                "Error occurred while getting product size:",
-                error
-              );
-            }
-          }
-          // console.log(productSizes);
-          // Get resume
-          const resumeLongList = [];
-          const resumeCourtList = [];
+          // // Get product sizes
+          // const productSizeSelector = "[data-attr-id='size_vendeur']";
+          // await page.waitForSelector(
+          //   productSizeSelector,
+          //   waitForSelectorOptions
+          // );
+          // const productSizeElements = await page.$$(productSizeSelector);
+          // const productSizes = [];
+          // for (const element of productSizeElements) {
+          //   try {
+          //     const productSize = await element.evaluate((el) =>
+          //       el.textContent.trim()
+          //     );
+          //     productSizes.push(productSize);
+          //   } catch (error) {
+          //     console.error(
+          //       "Error occurred while getting product size:",
+          //       error
+          //     );
+          //   }
+          // }
+          // // console.log(productSizes);
+          // // Get resume
+          // const resumeLongList = [];
+          // const resumeCourtList = [];
 
-          const allInfoClass = ".c-attribute";
-          const allInfoElements = await page.$$(allInfoClass);
-          for (const elem of allInfoElements) {
-            let info = await elem.evaluate((el) => el.textContent.trim());
-            info = info.replace("\n", "");
+          // const allInfoClass = ".c-attribute";
+          // const allInfoElements = await page.$$(allInfoClass);
+          // for (const elem of allInfoElements) {
+          //   let info = await elem.evaluate((el) => el.textContent.trim());
+          //   info = info.replace("\n", "");
 
-            let infoKey = await elem.$eval(".c-attribute__label", (el) =>
-              el.textContent.trim()
-            );
-            infoKey = infoKey.replace(/\r?\n|\r/g, "");
-            infoKey = infoKey.substring(0, infoKey.indexOf(" "));
+          //   let infoKey = await elem.$eval(".c-attribute__label", (el) =>
+          //     el.textContent.trim()
+          //   );
+          //   infoKey = infoKey.replace(/\r?\n|\r/g, "");
+          //   infoKey = infoKey.substring(0, infoKey.indexOf(" "));
 
-            let infoValue = await elem.$eval(".c-attribute__value", (el) =>
-              el.textContent.trim()
-            );
-            infoValue = infoValue.replace(/\r?\n|\r/g, "");
+          //   let infoValue = await elem.$eval(".c-attribute__value", (el) =>
+          //     el.textContent.trim()
+          //   );
+          //   infoValue = infoValue.replace(/\r?\n|\r/g, "");
 
-            if (infoKey === "EAN") {
-              localProductInfo["Product Ref"] = infoValue;
-            } else if (infoKey === "Genre") {
-              localProductInfo["main Category"] = infoValue;
-            } else if (infoKey === "Couleur") {
-              resumeLongList.push("Couleur:" + infoValue);
-              localProductInfo["Resume Long"] = resumeLongList;
-            } else if (infoKey === "Niveau") {
-              resumeLongList.push("Niveau:" + infoValue);
-              localProductInfo["Resume Long"] = resumeLongList;
-            } else if (infoKey === "Composition") {
-              resumeCourtList.push("Composition :" + infoValue);
-              localProductInfo["Resume Court"] = resumeCourtList;
-            } else if (infoKey === "Poids") {
-              resumeCourtList.push("Poids : " + infoValue);
-              localProductInfo["Resume Court"] = resumeCourtList;
-            } else if (infoKey === "Type") {
-              resumeCourtList.push("Type :" + infoValue);
-              localProductInfo["Resume Court"] = resumeCourtList;
-            }
+          //   if (infoKey === "EAN") {
+          //     localProductInfo["Product Ref"] = infoValue;
+          //   } else if (infoKey === "Genre") {
+          //     localProductInfo["main Category"] = infoValue;
+          //   } else if (infoKey === "Couleur") {
+          //     resumeLongList.push("Couleur:" + infoValue);
+          //     localProductInfo["Resume Long"] = resumeLongList;
+          //   } else if (infoKey === "Niveau") {
+          //     resumeLongList.push("Niveau:" + infoValue);
+          //     localProductInfo["Resume Long"] = resumeLongList;
+          //   } else if (infoKey === "Composition") {
+          //     resumeCourtList.push("Composition :" + infoValue);
+          //     localProductInfo["Resume Court"] = resumeCourtList;
+          //   } else if (infoKey === "Poids") {
+          //     resumeCourtList.push("Poids : " + infoValue);
+          //     localProductInfo["Resume Court"] = resumeCourtList;
+          //   } else if (infoKey === "Type") {
+          //     resumeCourtList.push("Type :" + infoValue);
+          //     localProductInfo["Resume Court"] = resumeCourtList;
+          //   }
 
-            // console.log(infoValue);
-          }
-          //get images
-          const imageSources = await page.$$eval(
-            ".c-product-detail__thumb-image",
-            (images) =>
-              images
-                .slice(0, 3)
-                .map((img) => img.getAttribute("srcset"))
-                .filter((srcset) => srcset !== null)
-          );
+          //   // console.log(infoValue);
+          // }
+          // //get images
+          // const imageSources = await page.$$eval(
+          //   ".c-product-detail__thumb-image",
+          //   (images) =>
+          //     images
+          //       .slice(0, 3)
+          //       .map((img) => img.getAttribute("srcset"))
+          //       .filter((srcset) => srcset !== null)
+          // );
 
-          const result = imageSources.length > 0 ? imageSources : ["[___]"];
-          const quality = result.map((src) => imageSizeFixer(src));
-          localProductInfo["images"] = quality;
-          console.log(`Product found for code: ${code}`);
-          console.log(localProductInfo);
+          // const result = imageSources.length > 0 ? imageSources : ["[___]"];
+          // const quality = result.map((src) => imageSizeFixer(src));
+          // localProductInfo["images"] = quality;
+          // console.log(`Product found for code: ${code}`);
+          // console.log(localProductInfo);
 
           batchResults.push({ code, status: "ok" });
         } else {
